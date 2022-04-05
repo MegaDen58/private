@@ -24,12 +24,7 @@ public class Main {
         else{
             double result = 0;
             for(int i = 2; i <= ((int)n) + 1; i++){
-                if(i % 2 == 0) {
-                    result += (Math.pow(x, i) / factorial(i));
-                }
-                else{
-                    result -= (Math.pow(x, i) / factorial(i));
-                }
+                result += (Math.pow(x, i) / i);
             }
             System.out.printf("%.3f", result);
         }
