@@ -5,23 +5,38 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
-        String result = "";;
         System.out.print("Введите предложение: ");
         String word = in.nextLine();
-        int max = 0;
-        String[] words = word.split(" ");
-        for(String t : words){
-            int c = t.length();
-            if(c > max){
-                max = c;
-                result = t;
+        int length = word.length();
+        char[] c = word.toCharArray();
+        int result = 0;
+        int k = length - 1;
+        if(length % 2 != 0){
+            int a = (length / 2) + 1;
+            for(int i = 0; i < a; i++, k--){
+                    if(c[i] == c[k]){
+                        result++;
+                }
+            }
+            if(result == (length / 2) + 1){
+                System.out.println("Число палиндром.");
+            }
+            else{
+                System.out.println("Число не палиндром.");
             }
         }
-        System.out.printf("Максимально длинное слова состоит из %d символа(ов)\nСлово(а): \n", max);
-        for(String t : words){
-            if(t.length() == max){
-                result = t;
-                System.out.println(result);
+        if(length % 2 == 0){
+            int a = length / 2;
+            for(int i = 0; k >= a; i++, k--){
+                if(c[i] == c[k]){
+                    result++;
+                }
+            }
+            if(result == length / 2){
+                System.out.println("Число палиндром.");
+            }
+            else{
+                System.out.println("Число не палиндром.");
             }
         }
     }
