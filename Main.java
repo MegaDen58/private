@@ -8,15 +8,16 @@ public class Main {
         String result = "";;
         System.out.print("Введите предложение: ");
         String word = in.nextLine();
-        int max = word.length();
+        int max = 0;
         String[] words = word.split(" ");
         for(String t : words){
             int c = t.length();
-            if(c < max){
+            if(c > max){
                 max = c;
+                result = t;
             }
         }
-        System.out.printf("Длина минимально слова равна %d символа(ов)\nЭти слова: \n", max);
+        System.out.printf("Максимально длинное слова состоит из %d символа(ов)\nСлово(а): \n", max);
         for(String t : words){
             if(t.length() == max){
                 result = t;
