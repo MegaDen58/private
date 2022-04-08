@@ -1,36 +1,21 @@
 package com.company;
-import java.util.Locale;
 import java.util.Scanner;
-import java.util.Arrays;
+import java.util.regex.*;
 
 
 public class Main {
-
     public static void main(String[] args) {
+        String regexp1 = "(([1-255]{1,3}\\.){3})\\d[1-255]{1,3}";
+        Pattern pattern = Pattern.compile(regexp1);
         Scanner in = new Scanner(System.in);
-
-        String wor = "abcdefghijklmnopqrstuvwxyz0123456789";
-        char[] letters = wor.toCharArray();
-
-        String[] code = new String[]
-                { "AA", "AD", "AF", "AG", "AV", "AX",
-                        "DA", "DD", "DF", "DG", "DV", "DX",
-                        "FA", "FD", "FF", "FG", "FV", "FX",
-                        "GA", "GD", "GF", "GG", "GV", "GX",
-                        "VA", "VD", "VF", "VG", "VV", "VX",
-                        "XA", "XD", "XF", "XG", "XV", "XX"
-                };
-
-        System.out.print("Введите слово: ");
+        System.out.print("Введите предложение: ");
         String word = in.nextLine();
-        String down = word.toLowerCase();
-        String result = "";
-        for(int i = 0; i < down.length(); i++){
-            char let = down.charAt(i);
-            int idx = wor.indexOf(let);
-            String one = code[idx];
-            result += one;
+        Matcher m = pattern.matcher(word);
+        if(m.find()){
+            System.out.printf("Корректный IP адрес: %s.", m.group());
         }
-        System.out.println(result);
+        else{
+            System.out.printf("Не найдено корректных IP адресов.");
+        }
     }
 }
