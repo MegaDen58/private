@@ -3,58 +3,60 @@ package com.company;
 import java.io.*;
 import java.util.Scanner;
 
-class Geometry implements Serializable{
-    double x;
-    double result;
 
-    public void getSin(double x){
-        result = x - Math.sin(Math.toRadians(x));
+class Function implements Serializable {
+    double x, y;
+
+    double getY() {
+        y = this.x - Math.sin(this.x);
+        return y;
     }
 }
 
+
 public class Main {
-    public static void main(String[] args) throws Exception {
+
+    public static void main(String[] args) {
+        String text;
         Scanner in = new Scanner(System.in);
-        boolean canNext = true;
-        try{
-            while(true) {
-                if (canNext) {
-                    System.out.print("Выберите действие (save, check, out): ");
+        Function func = new Function();
+        System.out.print("Введите значения: ");
+        int ss = 1;
+        while (true) {
+            text = in.nextLine();
+            try {
+                double x = Double.parseDouble(text);
+                func.x = x;
+                func.getY();
+                if(ss == 1){
+                    System.out.println("Вы можете ввести одну из следующих комманд: save, upload, check, stop ");
+                    ss++;
                 }
-                String i = in.next();
-
-                if (i.equalsIgnoreCase("save")) {
-                    canNext = true;
-                    FileOutputStream file = new FileOutputStream("input.txt");
-                    ObjectOutputStream output = new ObjectOutputStream(file);
-                    Geometry g = new Geometry();
-                    System.out.print("Введите x: ");
-                    g.x = in.nextDouble();
-                    g.getSin(g.x);
-                    output.writeObject(g);
-                    System.out.println("Данные сохранены.");
-                }
-
-                else if (i.equalsIgnoreCase("check")) {
-                    canNext = true;
-                    FileInputStream file1 = new FileInputStream("input.txt");
-                    ObjectInputStream input = new ObjectInputStream(file1);
-                    Geometry gg = (Geometry) input.readObject();
-                    System.out.printf("X = %s \t Result = %s\n", gg.x, gg.result);
-                }
-                else if(i.equalsIgnoreCase("out")){
+            } catch (Exception IOex) {
+                if (text.equalsIgnoreCase("save")) {
+                    try (ObjectOutputStream write = new ObjectOutputStream(new FileOutputStream("file.txt"))) {
+                        write.writeObject(func);
+                        System.out.println("Данные сохранены в файл.");
+                    } catch (IOException ex) {
+                        ex.getMessage();
+                    }
+                } else if (text.equalsIgnoreCase("upload")) {
+                    try (ObjectInputStream read = new ObjectInputStream(new FileInputStream("file.txt"))) {
+                        func = (Function) read.readObject();
+                        System.out.println("Всё нормально.");
+                    } catch (Exception ex) {
+                        ex.getMessage();
+                    }
+                } else if (text.equalsIgnoreCase("check")) {
+                    System.out.printf("x: %s\ny: %s\n",func.x, func.y);
+                } else if (text.equalsIgnoreCase("stop")){
                     break;
                 }
-                else if(canNext) {
-                    System.out.println("Я не знаю такой команды.");
-                    System.out.print("Выберите действие (save, check, out): ");
-                    canNext = false;
+                else {
+                    System.out.println("Такой команды не существует.");
                 }
+                System.out.println("Вы можете ввести одну из следующих комманд: save, upload, check, stop ");
             }
         }
-        catch (IOException ex){
-            System.out.println(ex.getMessage());
-        }
     }
-
 }
